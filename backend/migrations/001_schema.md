@@ -1,3 +1,3 @@
 # 初始结构
 
-SQLAlchemy启动创建以下业务表：shifts, downtimeevents, productioncounts, oeeruns, delivery_schedules, deliveries、users、audits。Source专属JSON字段由对应validation严格校验；Policy为不可覆盖的版本记录；Run保存source/policy冻结快照；Period仅用于已有期间选择器，不计入核心复杂度。已有数据库升级需先备份，后续字段演进应以独立迁移执行。
+SQLAlchemy启动创建以下业务表：shifts, downtimeevents, productioncounts, oeeruns, delivery_schedules, deliveries、users、audits、draft_merge_batches、draft_merge_items、draft_merge_locks。Source专属JSON字段由对应validation严格校验；Policy为不可覆盖的版本记录；Run保存source/policy冻结快照；Period仅用于已有期间选择器，不计入核心复杂度。draft_merge_batches/items 暂存离线回传批次与逐条原始依据、库内值、回传值、合并结果与冲突；draft_merge_locks 为单行互斥锁，令整批落地在核算读取时要么全部可见、要么全部不可见。已有数据库升级需先备份，后续字段演进应以独立迁移执行。

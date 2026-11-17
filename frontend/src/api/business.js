@@ -1,6 +1,13 @@
 import {request} from './client.js';
 export const loadAll=async()=>Object.fromEntries(await Promise.all(['sources','periods','policies','runs','schedules','deliveries','audits'].map(async k=>[k,await request('/'+k)])));
+export const loadMerge=async()=>Object.fromEntries(await Promise.all([['batches',request('/merge/batches')],['pending',request('/merge/pending')]]));
 export const saveSource=(data,id)=>request('/sources'+(id?'/'+id:''),id?'PUT':'POST',{data});
 export const savePolicy=data=>request('/policies','POST',{data});
 export const submitRun=data=>request('/runs','POST',data);
 export const approveRun=(id,note)=>request('/runs/'+id+'/approve','POST',{note});
+export const exportBundle=()=>request('/merge/export');
+export const submitMerge=data=>request('/merge/batches','POST',data);
+export const getBatch=id=>request('/merge/batches/'+id);
+export const recheckBatch=id=>request('/merge/batches/'+id+'/recheck','POST',{});
+export const resolveMerge=(batch,item,body)=>request('/merge/batches/'+batch+'/items/'+item+'/resolve','POST',body);
+export const landBatch=id=>request('/merge/batches/'+id+'/land','POST',{});
